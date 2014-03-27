@@ -12,4 +12,7 @@ public interface IWeirdScienceItem extends IRegistrable {
 	ArrayList<ISubItem> getSubItems();
     
     boolean InCreativeTab();
+    
+    //Returns 0 if this is not a vanilla furnace fuel item.
+    int getFurnaceFuelValue();
 }

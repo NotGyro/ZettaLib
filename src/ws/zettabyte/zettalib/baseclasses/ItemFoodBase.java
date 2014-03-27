@@ -10,6 +10,8 @@ import ws.zettabyte.zettalib.interfaces.IWeirdScienceItem;
 public class ItemFoodBase extends ItemFood implements IWeirdScienceItem {
 	
 	protected String englishName;
+
+	protected int furnaceFuelValue = 0;
 	
 	//Exclude viable block IDs from default ID values.
 	
@@ -91,4 +93,14 @@ public class ItemFoodBase extends ItemFood implements IWeirdScienceItem {
 		// Is in creative tab by default.
 		return true;
 	}
+	
+	@Override
+	public int getFurnaceFuelValue() {
+		return furnaceFuelValue;
+	}
+	
+	public void setFurnaceFuelValue(int furnaceFuelValue) {
+		this.furnaceFuelValue = furnaceFuelValue;
+	}
+
 }

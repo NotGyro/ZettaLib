@@ -16,4 +16,6 @@ public interface ISubItem extends IRegistrable {
 	void setAssociatedMeta(int setTo);
 	
 	boolean isInCreativeTab();
+	
+	int getFurnaceFuelValue();
 }

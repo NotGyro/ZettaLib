@@ -14,6 +14,8 @@ public class ItemBase extends Item implements IWeirdScienceItem {
 	//Exclude viable block IDs from default ID values.
 	protected static final int itemIDSearchLowerBound = 4096;
 	
+	protected int furnaceFuelValue = 0;
+
 	public ItemBase(Configuration config, String name, int defaultID) {
 		/* 
 		 * Real version of the constructor. Ultimately all other versions of the constructor turn into this.
@@ -88,4 +90,12 @@ public class ItemBase extends Item implements IWeirdScienceItem {
         throw new RuntimeException("No free item IDs above " + itemIDSearchLowerBound + " available upon inspection in Weird Science's ItemBase.FindFreeItemID().");
 	}
 
+	@Override
+	public int getFurnaceFuelValue() {
+		return furnaceFuelValue;
+	}
+	
+	public void setFurnaceFuelValue(int furnaceFuelValue) {
+		this.furnaceFuelValue = furnaceFuelValue;
+	}
 }
