@@ -2,20 +2,38 @@ package ws.zettabyte.zettalib.chemistry;
 
 import net.minecraftforge.fluids.Fluid;
 
-public interface IReactionSpec {
-	Fluid getSolvent();
+public interface IReactionSpec
+{
+    Fluid getSolvent ();
 
-	Object getSolute();
+    Object getSolute ();
 
-	Object getSolventTarget();
+    Object getSolventTarget ();
 
-	Object getSoluteTarget();
+    Object getSoluteTarget ();
 
-	boolean isSolventAffected();
+    boolean isSolventAffected ();
 
-	boolean isSoluteAffected();
+    boolean isSoluteAffected ();
 
-	int getSolventMin();
+    int getSolventMin ();
 
-	int getSoluteMin();
+    int getSoluteMin ();
+
+    /**
+    * @return null if there is no lower bound.
+    */
+    Integer getHeatLowerBound ();
+
+    /**
+    * @return null if there is no upper bound.
+    */
+    Integer getHeatUpperBound ();
+
+    /**
+    * @return Positive for an exothermic reaction, negative for an endothermic reaction.
+    * This is a consumption value for endothermic reactions: If it can't be supplied
+    * with the necessary heat, it can't occur.
+    */
+    int getHeatChangeProduced ();
 }
