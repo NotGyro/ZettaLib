@@ -1,8 +1,9 @@
 package ws.zettabyte.zettalib.recipe;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 
-public interface IWorkbenchRecipe {
+public interface IWorkbenchRecipe extends IRecipe {
 	//Get the result of this crafting recipe.
 	ItemStack getResult();
 	//Returns the recipe in the standard format.

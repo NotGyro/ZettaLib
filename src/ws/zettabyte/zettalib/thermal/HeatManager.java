@@ -115,12 +115,15 @@ public class HeatManager
                 if (handlerChunks.containsKey(chunkCoord))
                 {
                     handlersNotify = handlerChunks.get(current);
-                    //Notify each.
-                    for (ImmutablePair<BlockCoord, IHeatHandler> heater : handlersNotify)
+                    //Notify each, being sure to dodge null pointer errors.
+                    if(handlersNotify != null) 
                     {
-                        //Register heat handlers with eachother.
-                        toReg.NotifyNearby(heater.right);
-                        heater.right.NotifyNearby(toReg);
+                        for (ImmutablePair<BlockCoord, IHeatHandler> heater : handlersNotify)
+                        {
+                            //Register heat handlers with eachother.
+                            toReg.NotifyNearby(heater.right);
+                            heater.right.NotifyNearby(toReg);
+                        }
                     }
                 }
             }
@@ -167,10 +170,13 @@ public class HeatManager
                 if (handlerChunks.containsKey(chunkCoord))
                 {
                     handlersNotify = handlerChunks.get(current);
-                    //Notify each.
-                    for (ImmutablePair<BlockCoord, IHeatHandler> heater : handlersNotify)
+                    //Notify each, making sure to avoid an NPE.
+                    if(handlersNotify != null)
                     {
-                        heater.right.NearbyRemoved(toReg);
+                        for (ImmutablePair<BlockCoord, IHeatHandler> heater : handlersNotify)
+                        {
+                            heater.right.NearbyRemoved(toReg);
+                        }
                     }
                 }
             }

@@ -10,6 +10,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -63,7 +64,7 @@ public class ContentRegistry implements IFuelHandler
     private ArrayList<TileEntity> tileentitiesToRegister;
 
     private ArrayList<IDeferredInit> initToDo;
-    ArrayList<IWorkbenchRecipe> recipesToRegister;
+    ArrayList<IRecipe> recipesToRegister;
 
     private ArrayList<IReactionReceiver> reactants;
 
@@ -97,7 +98,7 @@ public class ContentRegistry implements IFuelHandler
         fluidsToRegister = new ArrayList<Fluid>(16);
         tileentitiesToRegister = new ArrayList<TileEntity>(32);
         initToDo = new ArrayList<IDeferredInit>(64);
-        recipesToRegister = new ArrayList<IWorkbenchRecipe>(128);
+        recipesToRegister = new ArrayList<IRecipe>(128);
         reactants = new ArrayList<IReactionReceiver>(8);
     }
 
@@ -182,7 +183,7 @@ public class ContentRegistry implements IFuelHandler
         */
         if (item instanceof IRecipeProvider)
         {
-            ArrayList<IWorkbenchRecipe> rp = ((IRecipeProvider) item).getRecipes();
+            ArrayList<IRecipe> rp = ((IRecipeProvider) item).getRecipes();
             for (int i = 0; i < rp.size(); ++i)
             {
                 RegisterRecipe(rp.get(i));
@@ -240,7 +241,7 @@ public class ContentRegistry implements IFuelHandler
         */
         if (block instanceof IRecipeProvider)
         {
-            ArrayList<IWorkbenchRecipe> rp = ((IRecipeProvider) block).getRecipes();
+            ArrayList<IRecipe> rp = ((IRecipeProvider) block).getRecipes();
             for (int i = 0; i < rp.size(); ++i)
             {
                 RegisterRecipe(rp.get(i));
@@ -251,7 +252,7 @@ public class ContentRegistry implements IFuelHandler
     }
 
     //Automatically calls RegisterRegistrable if the block is a registrable.
-    public boolean RegisterRecipe (IWorkbenchRecipe recipe)
+    public boolean RegisterRecipe (IRecipe recipe)
     {
         GeneralRegister(recipe);
         recipesToRegister.add(recipe);
@@ -363,28 +364,35 @@ public class ContentRegistry implements IFuelHandler
     {
         for (int i = 0; i < recipesToRegister.size(); ++i)
         {
-            IWorkbenchRecipe recipe = recipesToRegister.get(i);
-            if (recipe.usesOredict())
+            if (recipesToRegister.get(i) instanceof IWorkbenchRecipe)
             {
-                if (recipe.isShapeless())
+                IWorkbenchRecipe recipe = (IWorkbenchRecipe) recipesToRegister.get(i);
+                if (recipe.usesOredict())
                 {
-                    GameRegistry.addShapedRecipe(recipe.getResult(), recipe.get());
+                    if (!recipe.isShapeless())
+                    {
+                        GameRegistry.addShapedRecipe(recipe.getResult(), recipe.get());
+                    }
+                    else
+                    {
+                        GameRegistry.addShapelessRecipe(recipe.getResult(), recipe.get());
+                    }
                 }
                 else
                 {
-                    GameRegistry.addShapelessRecipe(recipe.getResult(), recipe.get());
+                    if (!recipe.isShapeless())
+                    {
+                        GameRegistry.addRecipe(new ShapedOreRecipe(recipe.getResult(), recipe.get()));
+                    }
+                    else
+                    {
+                        GameRegistry.addRecipe(new ShapelessOreRecipe(recipe.getResult(), recipe.get()));
+                    }
                 }
             }
             else
             {
-                if (!recipe.isShapeless())
-                {
-                    GameRegistry.addRecipe(new ShapedOreRecipe(recipe.getResult(), recipe.get()));
-                }
-                else
-                {
-                    GameRegistry.addRecipe(new ShapelessOreRecipe(recipe.getResult(), recipe.get()));
-                }
+                GameRegistry.addRecipe(recipesToRegister.get(i));
             }
         }
     }
