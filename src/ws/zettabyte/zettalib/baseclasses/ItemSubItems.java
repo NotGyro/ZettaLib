@@ -35,8 +35,8 @@ public class ItemSubItems extends ItemBase {
 
 	
 
+    @SideOnly(Side.CLIENT)
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister reg) {
 		for(ISubItem b : subItems) {
 			b.setIcon(reg.registerIcon(b.getTextureName()));
@@ -50,6 +50,7 @@ public class ItemSubItems extends ItemBase {
 		}
 		return null;
 	}
+    @SideOnly(Side.CLIENT)
 	@Override
     public Icon getIconFromDamage(int i) {
 		if(subItems.get(i) != null) {
