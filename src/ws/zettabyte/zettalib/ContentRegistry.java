@@ -46,9 +46,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 * Helps allow properties of blocks, items, etc... to be set declaratively in the class,
 * rather than procedurally in some extremely bloated initialization method.
 *
-* An auxiliary usage, since virtually all Weird Science content passes through this class'
-* initialization methods, is to store and retrieve content class instances by name.
-*
 * Author: Gyro
 */
 
@@ -56,8 +53,7 @@ public class ContentRegistry implements IFuelHandler
 {
     //My favorite superhero.
     public BucketEventManager bucketMan;
-
-    private HashMap<String, Object> registry;
+    
     private ArrayList<Item> itemsToRegister;
     private ArrayList<Block> blocksToRegister;
     private ArrayList<Fluid> fluidsToRegister;
@@ -92,7 +88,6 @@ public class ContentRegistry implements IFuelHandler
         bucketMan = new BucketEventManager();
 
         //Give it a large size hint.
-        registry = new HashMap<String, Object>(128);
         itemsToRegister = new ArrayList<Item>(64);
         blocksToRegister = new ArrayList<Block>(64);
         fluidsToRegister = new ArrayList<Fluid>(16);
@@ -102,11 +97,6 @@ public class ContentRegistry implements IFuelHandler
         reactants = new ArrayList<IReactionReceiver>(8);
     }
 
-    //Gets anything registered with this.
-    public Object getObject (String str)
-    {
-        return registry.get(str);
-    }
 
     public void GeneralRegister (Object reg)
     {
@@ -132,16 +122,16 @@ public class ContentRegistry implements IFuelHandler
     public boolean RegisterRegistrable (IRegistrable reg)
     {
         //Don't just silently break if we're overwriting things.
-        if (registry.containsKey(reg.getGameRegistryName()))
-        {
-            logger.severe("Duplicate Weird Science registry entry: " + reg.getGameRegistryName());
-            return false;
-        }
-        else
-        {
-            registry.put(reg.getGameRegistryName(), reg);
+        //if (registry.containsKey(reg.getGameRegistryName()))
+        //{
+        //    logger.severe("Duplicate Weird Science registry entry: " + reg.getGameRegistryName());
+        //    return false;
+        //}
+        //else
+        //{
+        //    registry.put(reg.getGameRegistryName(), reg);
             return true;
-        }
+        //}
     }
 
     public void RegisterSounds (ISoundProvider prov)
@@ -151,7 +141,7 @@ public class ContentRegistry implements IFuelHandler
 
     public void OverrideRegister (IRegistrable reg)
     {
-        registry.put(reg.getGameRegistryName(), reg);
+        //registry.put(reg.getGameRegistryName(), reg);
     }
 
     public void DoConfig (IConfiggable obj)
